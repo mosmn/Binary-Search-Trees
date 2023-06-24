@@ -140,9 +140,98 @@ class Tree {
         }
     }
 
+    inorder(node) {
+        if(node === null) {
+            return;
+        }
 
+        this.inorder(node.left);
+        console.log(node.value);
+        this.inorder(node.right);
+    }
 
+    preorder(node) {
+        if(node === null) {
+            return;
+        }
+        
+        console.log(node.value);
+        this.preorder(node.left);
+        this.preorder(node.right);
+    }
 
+    postorder(node) {
+        if(node === null) {
+            return;
+        }
+
+        this.postorder(node.left);
+        this.postorder(node.right);
+        console.log(node.value);
+    }
+
+    height(node) {
+        if(node === null) {
+            return -1;
+        }
+
+        const leftHeight = this.height(node.left);
+        const rightHeight = this.height(node.right);
+
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    depth(node) {
+        if(node === null) {
+            return -1;
+        }
+
+        let treesRoot = this.root;
+        let depth = 0;
+
+        while(treesRoot !== null) {
+            if(node.value < treesRoot.value) {
+                treesRoot = treesRoot.left;
+            } else if(node.value > treesRoot.value) {
+                treesRoot = treesRoot.right;
+            } else {
+                break;
+            }
+
+            depth++;
+        }
+
+        return depth;
+    }
+
+    isBalanced(node) {
+        if(node === null) {
+            return true;
+        }
+
+        const leftHeight = this.height(node.left);
+        const rightHeight = this.height(node.right);
+
+        if(Math.abs(leftHeight - rightHeight) <= 1 && this.isBalanced(node.left) && this.isBalanced(node.right)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    rebalance() {
+        const arr = [];
+        this.inorderToArray(this.root, arr);
+        this.root = this.buildTree(arr);
+    }
+
+    inorderToArray(node, arr) {
+        if(node !== null) {
+            this.inorderToArray(node.left, arr);
+            arr.push(node.value);
+            this.inorderToArray(node.right, arr);
+        }
+    }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -158,15 +247,50 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
 
-const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];// sorted array: [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
 
-const tree = new Tree(arr);
+const generateRandomNumbers = (n, max) => {
+    const arr = [];
+    for(let i = 0; i < n; i++) {
+        arr.push(Math.floor(Math.random() * max));
+    }
+    return arr;
+}
 
-tree.insert(10);
-tree.insert(119999);
-tree.delete(23);
+const randomNumbers = generateRandomNumbers(10, 100);
+const tree = new Tree(randomNumbers);
 
-console.log(prettyPrint(tree.root));
+console.log("Is the tree balanced?", tree.isBalanced(tree.root));
 
+console.log("Level order traversal:");
 tree.levelOrder(tree.root);
 
+console.log("Preorder traversal:");
+tree.preorder(tree.root);
+
+console.log("Postorder traversal:");
+tree.postorder(tree.root);
+
+console.log("Inorder traversal:");
+tree.inorder(tree.root);
+
+tree.insert(110);
+tree.insert(120);
+tree.insert(130);
+
+console.log("Is the tree balanced?", tree.isBalanced(tree.root));
+
+tree.rebalance();
+
+console.log("Is the tree balanced?", tree.isBalanced(tree.root));
+
+console.log("Level order traversal after rebalancing:");
+tree.levelOrder(tree.root);
+
+console.log("Preorder traversal after rebalancing:");
+tree.preorder(tree.root);
+
+console.log("Postorder traversal after rebalancing:");
+tree.postorder(tree.root);
+
+console.log("Inorder traversal after rebalancing:");
+tree.inorder(tree.root);
