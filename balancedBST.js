@@ -256,8 +256,11 @@ const generateRandomNumbers = (n, max) => {
     return arr;
 }
 
-const randomNumbers = generateRandomNumbers(10, 100);
+const randomNumbers = generateRandomNumbers(20, 100);
 const tree = new Tree(randomNumbers);
+
+console.log(prettyPrint(tree.root));
+console.log(`Height of the tree is ${tree.height(tree.root)}`);
 
 console.log("Is the tree balanced?", tree.isBalanced(tree.root));
 
