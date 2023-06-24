@@ -92,7 +92,3 @@ tree.postorder((node) => console.log(node.data));
 console.log("Inorder traversal after rebalancing:");
 tree.inorder((node) => console.log(node.data));
 ```
-
-## Acknowledgments
-
-- The `prettyPrint` function used for visualizing the binary search tree is adapted from [this Stack Overflow answer](https://stackoverflow.com/a/48482071).
