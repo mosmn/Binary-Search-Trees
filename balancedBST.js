@@ -118,7 +118,29 @@ class Tree {
         }
     }
 
-    
+    levelOrder(node) {
+        if(node === null) {
+            return;
+        }
+
+        const queue = [];
+        queue.push(node);
+
+        while(queue.length > 0) {
+            const node = queue.shift();
+            console.log(node.value);
+
+            if(node.left !== null) {
+                queue.push(node.left);
+            }
+
+            if(node.right !== null) {
+                queue.push(node.right);
+            }
+        }
+    }
+
+
 
 
 }
@@ -145,4 +167,6 @@ tree.insert(119999);
 tree.delete(23);
 
 console.log(prettyPrint(tree.root));
+
+tree.levelOrder(tree.root);
 
