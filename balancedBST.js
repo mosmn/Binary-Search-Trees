@@ -37,6 +37,89 @@ class Tree {
         return root;
     }
 
+    insert(value) {
+        const newNode = new Node(value);
+
+        if(this.root === null) {
+            this.root = newNode;
+        } else {
+            this.insertNode(this.root, newNode);
+        }
+    }
+
+    insertNode(node, newNode) {
+        if(newNode.value < node.value) {
+            if(node.left === null) {
+                node.left = newNode;
+            } else {
+                this.insertNode(node.left, newNode);
+            }
+        } else {
+            if(node.right === null) {
+                node.right = newNode;
+            } else {
+                this.insertNode(node.right, newNode);
+            }
+        }
+    }
+    
+    delete(value) {
+        this.root = this.deleteNode(this.root, value);
+    }
+
+    deleteNode(node, value) {
+        if(node === null) {
+            return null;
+        } else if(value < node.value) {
+            node.left = this.deleteNode(node.left, value);
+            return node;
+        } else if(value > node.value) {
+            node.right = this.deleteNode(node.right, value);
+            return node;
+        } else {
+            if(node.left === null && node.right === null) {
+                node = null;
+                return node;
+            }
+
+            if(node.left === null) {
+                node = node.right;
+                return node;
+            } else if(node.right === null) {
+                node = node.left;
+                return node;
+            }
+
+            const newNode = this.findMinNode(node.right);
+            node.value = newNode.value;
+
+            node.right = this.deleteNode(node.right, newNode.value);
+            return node;
+        }
+    }
+
+    findMinNode(node) {
+        if(node.left === null) {
+            return node;
+        } else {
+            return this.findMinNode(node.left);
+        }
+    }
+
+    find(node, value) {
+        if(node === null) {
+            return null;
+        } else if(value < node.value) {
+            return this.find(node.left, value);
+        } else if(value > node.value) {
+            return this.find(node.right, value);
+        } else {
+            return node;
+        }
+    }
+
+    
+
 
 }
 
@@ -56,6 +139,10 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];// sorted array: [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
 
 const tree = new Tree(arr);
+
+tree.insert(10);
+tree.insert(119999);
+tree.delete(23);
 
 console.log(prettyPrint(tree.root));
 
